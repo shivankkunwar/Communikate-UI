@@ -3,7 +3,7 @@ import '../styles/FriendsComponent.css';
 
 const FriendsComponent = () => {
   const [activeTab, setActiveTab] = useState('allFriends');
-
+  const [searchGlobal, setSearchGlobal] = useState('');
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -83,12 +83,29 @@ const FriendsComponent = () => {
 
   return (
     <div className="friends-component">
+       <div className="search-global">
+        <input
+          type="text"
+          placeholder="Search people..."
+          value={searchGlobal}
+          onChange={(e) => {
+            setSearchGlobal(e.target.value)
+          }}
+        />
+
+      </div>
       <div className="tabs">
         <button style={{color:"black"}}
           className={`tab-button ${activeTab === 'allFriends' ? 'active' : ''}`}
           onClick={() => {handleTabChange('allFriends' );getFriends()}}
         >
           All Friends
+        </button>
+        <button style={{color:'black'}}
+          className={`tab-button ${activeTab === 'requests' ? 'active' : ''}`}
+          onClick={() => {handleTabChange('requests'); getrequest()}}
+        >
+          Requests
         </button>
         <button style={{color:'black'}}
           className={`tab-button ${activeTab === 'requests' ? 'active' : ''}`}

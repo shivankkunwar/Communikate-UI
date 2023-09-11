@@ -96,8 +96,8 @@ const ConversationList = ({ selectedConversation, onConversationSelect }) => {
   }, [])
 
   return (
-    <div id='list' className="conversation-list">
-      <div className="search-people">
+    <>
+    <div className="search-people">
         <input
           type="text"
           placeholder="Search people..."
@@ -108,6 +108,8 @@ const ConversationList = ({ selectedConversation, onConversationSelect }) => {
         />
 
       </div>
+    <div id='list' className="conversation-list">
+      
 
       {searchQuery.length > 0 && (
         <div className="search-results">
@@ -188,7 +190,9 @@ const ConversationList = ({ selectedConversation, onConversationSelect }) => {
         </div>
       ))}
     </div>
+    </>
   );
+  
 };
 
 export default ConversationList;

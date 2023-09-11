@@ -1,0 +1,19 @@
+.navbar{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    max-height: 7vh;
+    z-index: 100;
+}
+.navbar ul{
+    display: flex;
+    list-style-type: none;
+    padding-right: 5vw;
+}
+.navbar ul li{
+    padding: 2vw;
+    
+}
+.navbar ul li a{
+    text-decoration: none;
+}
