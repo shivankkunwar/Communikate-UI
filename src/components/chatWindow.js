@@ -145,6 +145,12 @@ socket.on('send',(res)=>{
             placeholder="Type your message..."
             value={newMessage}
             onChange={event => setNewMessage(event.target.value)}
+            onKeyDown={event => {
+              if (event.key === 'Enter') {
+                handleSendMessage();
+                event.preventDefault(); // Prevents the addition of a new line in the input after pressing 'Enter'
+              }
+            }}
           />
           <button className="send-button" onClick={handleSendMessage}>
             Send

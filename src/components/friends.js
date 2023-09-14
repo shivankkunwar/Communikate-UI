@@ -4,14 +4,44 @@ import '../styles/FriendsComponent.css';
 const FriendsComponent = () => {
   const [activeTab, setActiveTab] = useState('allFriends');
   const [searchGlobal, setSearchGlobal] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [all,setall] = useState([]);
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-
+  useEffect(()=>{
+    handleSearch();
+  },[searchGlobal]);
+  
   const [allFriendsData,setAllFriendsData] = useState(
   [
     
   ])
+
+
+  const handleSearch = () => {
+
+    if (searchGlobal == '') {
+      console.log('ddd')
+      setSearchResults([])
+      return;
+    }
+    const results = all.filter(conversation => {
+      return conversation.username.toLowerCase().includes(searchGlobal.toLowerCase())
+    }
+    );
+    console.log('results',results);
+    setSearchResults(results);
+
+
+
+  };
+  //to fetch all the users 
+  const getall = ()=>{
+
+    fetch('https://mern-api-9vf7.onrender.com/allusers/allusers').then(res=>res.json()).then(res=>setall(res.allusers))
+
+  }
 
   const getFriends = ()=>{
     fetch('https://mern-api-9vf7.onrender.com/friends/getfriends',{
@@ -37,8 +67,19 @@ const FriendsComponent = () => {
 
     getFriends();
     getrequest();
+    getall();
     
   },[])
+  const handleSendRequest = (conversationId) => {
+    fetch('https://mern-api-9vf7.onrender.com/friends/request',{
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token : localStorage.getItem('token'), to:conversationId })
+      
+    })
+  };
 
   function handleAccept(id){
     fetch('https://mern-api-9vf7.onrender.com/friends/accept',{
@@ -94,21 +135,55 @@ const FriendsComponent = () => {
         />
 
       </div>
+      {searchGlobal.length > 0 && (
+        <div className="search-results">
+         
+          {
+            searchResults.map((conversation) => {
+              const isFriend = allFriendsData.some((friend) => friend._id === conversation._id);
+            
+              // Conditionally render based on whether the conversation is not a friend
+              if (!isFriend) {
+                return (
+                  <div key={conversation._id} className="search-result">
+                    <div className="profile-pic">
+                      <img src={'https://www.imagediamond.com/blog/wp-content/uploads/2020/06/cartoon-boy-images-4.jpg'} alt={`Profile of ${conversation.name}`} />
+                    </div>
+                    <div style={{ display: 'flex', width: '30vw', justifyContent: "space-between", alignItems: 'center' }} className="search-result-info">
+                      <h4 className="name">{conversation.username}</h4>
+                      <button
+                        
+                        id='sendreq'
+                        onClick={() => { handleSendRequest(conversation._id) }}
+                      >
+                        Send Request
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+            
+              // Return null if the conversation is a friend (nothing will be rendered)
+              return null;
+            })
+          }
+        </div>
+      )}
       <div className="tabs">
-        <button style={{color:"black"}}
-          className={`tab-button ${activeTab === 'allFriends' ? 'active' : ''}`}
+        <button 
+          className={`friend-buttons ${activeTab === 'allFriends' ? 'active' : ''}`}
           onClick={() => {handleTabChange('allFriends' );getFriends()}}
         >
           All Friends
         </button>
-        <button style={{color:'black'}}
-          className={`tab-button ${activeTab === 'requests' ? 'active' : ''}`}
+        <button 
+          className={`friend-buttons ${activeTab === 'requests' ? 'active' : ''}`}
           onClick={() => {handleTabChange('requests'); getrequest()}}
         >
           Requests
         </button>
-        <button style={{color:'black'}}
-          className={`tab-button ${activeTab === 'requests' ? 'active' : ''}`}
+        <button 
+          className={`friend-buttons ${activeTab === 'requests' ? 'active' : ''}`}
           onClick={() => {handleTabChange('requests'); getrequest()}}
         >
           Requests
