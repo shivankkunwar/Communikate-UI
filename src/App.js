@@ -4,8 +4,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/login';
 import Friends from './components/friends';
 import Navbar from './components/Navbar';
+import { AuthProvider } from './components/AuthContext';
 function App() {
   return (
+    <AuthProvider>
     <div className="App">
       
       <BrowserRouter>
@@ -20,6 +22,7 @@ function App() {
 
 
     </div>
+    </AuthProvider>
   );
 }
 

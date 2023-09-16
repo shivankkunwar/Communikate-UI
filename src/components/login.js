@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from './AuthContext';
 import '../styles/HomePage.css'; // Import your CSS file for styling
 
 const Login = () => {
 
-    
+    const { isLoggedIn, setisLoggedIn } = useContext(AuthContext);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -39,7 +41,7 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (activeForm === 'signup')
+        if (activeForm === 'signup'){
             fetch('https://mern-api-9vf7.onrender.com/allusers/register', {
                 method: 'POST',
                 headers: {
@@ -47,6 +49,9 @@ const Login = () => {
                 },
                 body: JSON.stringify({ username: formData.username, email: formData.email, password: formData.password })
             })
+            
+             setActiveForm('login')
+        }
         else {
 
             fetch('https://mern-api-9vf7.onrender.com/allusers/login', {
@@ -58,6 +63,7 @@ const Login = () => {
             }).then(res => res.json()).then(res => {
                 if (res.token) {
                     localStorage.setItem('token', res.token);
+                    setisLoggedIn(true);
                     navigate('/chat')
                 }
             });

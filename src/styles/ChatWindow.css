@@ -8,6 +8,8 @@
     flex-direction: column;
     border-left: 1px solid #e0e0e0;
     height: 100vh; /* Set chat window height to 100vh */
+    background-image:url(https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png);
+
   }
   
   .chat-header {

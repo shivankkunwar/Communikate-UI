@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import ConversationList from "./ConversationList";
 import ChatWindow from "./chatWindow";
 import FriendsComponent from "./friends";
+import { AuthContext } from "./AuthContext";
+
 import "../styles/ChatApp.css"; // Import your CSS file for styling
 
 const ChatApp = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const {isLoggedIn, setIsLoggedIn} = useContext(AuthContext);//debug this
 
   const handleConversationSelect = (conversationId) => {
     setSelectedConversation(conversationId);
@@ -14,7 +16,7 @@ const ChatApp = () => {
 
   return (
     <div>
-      {localStorage.getItem("token") ? (
+      {isLoggedIn ? (
         <div className="chat-app">
           {/* Show the Login component if not logged in */}
           {/* <button  to get chat full screen
@@ -51,11 +53,19 @@ const ChatApp = () => {
               {isLoggedIn && selectedConversation ? (
                 <ChatWindow conversationId={selectedConversation} />
               ) : (
-                <p className="no-conversation-message">
-                  {isLoggedIn
-                    ? "Select a conversation to start chatting."
-                    : "Please log in."}
-                </p>
+                <div className="no-conversation-message">
+                  
+                  {isLoggedIn ? (
+                      <>
+                        <h1 className="home__title"> Select Chat to connect </h1>
+                        <p className="home__text">
+                         load your chats click on one of your friends
+                        </p>
+                      </>
+                    ) : null}
+
+                  
+                </div>
               )}
             </div>
           )}

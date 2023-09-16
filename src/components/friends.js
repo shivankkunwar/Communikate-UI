@@ -183,10 +183,10 @@ const FriendsComponent = () => {
           Requests
         </button>
         <button 
-          className={`friend-buttons ${activeTab === 'requests' ? 'active' : ''}`}
-          onClick={() => {handleTabChange('requests'); getrequest()}}
+          className={`friend-buttons ${activeTab === 'sentRequests' ? 'active' : ''}`}
+          onClick={() => {handleTabChange('sentRequests'); getrequest()}}
         >
-          Requests
+          Sent Requests
         </button>
       </div>
       <div className="content">
