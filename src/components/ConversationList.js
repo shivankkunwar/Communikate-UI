@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ConversationList.css";
+import axios from "axios";
 
 const ConversationList = ({ selectedConversation, onConversationSelect }) => {
   const navigate = useNavigate();
@@ -31,15 +32,20 @@ const ConversationList = ({ selectedConversation, onConversationSelect }) => {
   }, [searchQuery]);
 
   const handleSendRequest = (conversationId) => {
-    fetch("https://mern-api-9vf7.onrender.com/friends/request", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: localStorage.getItem("token"),
-        to: conversationId,
-      }),
+    // fetch("https://mern-api-9vf7.onrender.com/friends/request", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     token: localStorage.getItem("token"),
+    //     to: conversationId,
+    //   }),
+    // });
+
+    axios.post("https://mern-api-9vf7.onrender.com/friends/request", {
+      token: localStorage.getItem("token"),
+      to: conversationId,
     });
   };
 
@@ -68,15 +74,21 @@ const ConversationList = ({ selectedConversation, onConversationSelect }) => {
     setIsMenuOpen(!isMenuOpen);
   };
   const getFriends = () => {
-    fetch("https://mern-api-9vf7.onrender.com/friends/getfriends", {
-      headers: {
-        token: localStorage.getItem("token"),
-      },
-    })
-      .then((res) => res.json())
+    // fetch("https://mern-api-9vf7.onrender.com/friends/getfriends", {
+    //   headers: {
+    //     token: localStorage.getItem("token"),
+    //   },
+    // })
+    axios
+      .get("https://mern-api-9vf7.onrender.com/friends/getfriends", {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      })
+
       .then((res) => {
-        setallfriends(res.users);
-        if (res.users.length === 0) {
+        setallfriends(res.data.users);
+        if (res.data.users.length === 0) {
           navigate("/friends");
         }
       });
@@ -84,9 +96,10 @@ const ConversationList = ({ selectedConversation, onConversationSelect }) => {
   // fetching all users for search
 
   const getall = () => {
-    fetch("https://mern-api-9vf7.onrender.com/allusers/allusers")
-      .then((res) => res.json())
-      .then((res) => setall(res.allusers));
+    // fetch("https://mern-api-9vf7.onrender.com/allusers/allusers")
+    //   .then((res) => res.json())
+      axios.get("https://mern-api-9vf7.onrender.com/allusers/allusers")
+      .then((res) => setall(res.data.allusers));
   };
   useEffect(() => {
     getFriends();
